@@ -1,11 +1,46 @@
+from pybricks.parameters import Color, Button
+
 from config import *
 from robot import Robot
 from pose import Pose
 from movement import Movement
+from helper import debug_log
+
+from runs.red_run import red_run
 
 robot = Robot()
 pose = Pose(0, 0, 0)
 mv = Movement(robot, pose)
 
+def main():
+    attachments = {
+        Color.RED: (red_run,)
+    }
+
+    stage = 0
+    current_color = Color.NONE
+    
+    while True:
+        top_color = robot.color_top.color()
+        robot.hub.light.on(top_color)
+
+        if current_color is not top_color:
+            current_color = top_color
+            stage = 0
+
+        pressed = robot.hub.buttons.pressed()
+
+        if Button.RIGHT in pressed:
+            funcs = attachments.get(top_color)
+            if funcs:
+                funcs[stage](robot, mv)
+            else:
+                debug_log("No valid attachment detected, color {}".format(top_color), name="attachment")
+        
+        if Button.LEFT in pressed and top_color in attachments:
+            stage = (stage + 1) % len(attachments[top_color])
+
+
 if __name__ == "__main__":
+    main()
     raise SystemExit
