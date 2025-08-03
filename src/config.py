@@ -1,24 +1,24 @@
-from pybricks.parameters import Port, Color
+from pybricks.parameters import Port, Axis
 
 ########## ROBOT ##########
 
-HUB_TOP = None
-HUB_FRONT = None
+HUB_TOP = Axis.Z
+HUB_FRONT = Axis.Y
 
-PORT_LEFT_DRIVE = None
-PORT_RIGHT_DRIVE = None
-PORT_LEFT_MOTOR = None
-PORT_RIGHT_MOTOR = None
+PORT_LEFT_DRIVE = Port.A
+PORT_RIGHT_DRIVE = Port.B
+PORT_LEFT_MOTOR = Port.C
+PORT_RIGHT_MOTOR = Port.D
 
-PORT_COLOR = None
+PORT_COLOR = Port.F
 
-WHEEL_DIAMETER = 0
-AXLE_TRACK = 0
+WHEEL_DIAMETER = 49.5  # mm
+AXLE_TRACK = 80  # mm
 
 ########## PID ##########
 
 PID_DRIVE = {
-    "kp": 1,
+    "kp": 3,
     "ki": 0,
     "kd": 0,
     "i_max": 100,

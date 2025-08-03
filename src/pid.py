@@ -16,7 +16,7 @@ class PID_Controller:
         self.i_max = config.get("i_max", None)
         self.output_max = config.get("output_max", None)
 
-        self.setpoint = setpoint
+        self._setpoint = setpoint
 
         self._proportional = 0
         self._integral = 0
@@ -25,18 +25,18 @@ class PID_Controller:
         self._last_error = 0
         self._error = 100000
     
-    def update(self, input, dt=1):
+    def update(self, input, d_time=1):
         """
         Updates the PID controller with the new input value.
         
         :param input: The current input value
         :return: The correction value
         """
-        error = input - self.setpoint
+        error = input - self._setpoint
 
-        self._proportional = error * self.kp * dt
-        self._integral += error * self.ki * dt
-        self._derivative = ((error - self._last_error) / dt) * self.kd if dt > 0 else 0
+        self._proportional = error * self.kp * d_time
+        self._integral += error * self.ki * d_time
+        self._derivative = ((error - self._last_error) / d_time) * self.kd if d_time > 0 else 0
 
         if self.i_max is not None:
             self._integral = clamp(self._integral, -self.i_max, self.i_max)
@@ -59,9 +59,10 @@ class PID_Controller:
         self._integral = 0
         self._derivative = 0
         self._last_error = 0
-    
-    @property
-    def tunings(self):
+
+    # --- Getters and Setters ---
+
+    def get_tunings(self):
         """
         Returns the current PID tunings.
         
@@ -75,8 +76,7 @@ class PID_Controller:
             "output_max": self.output_max
         }
     
-    @tunings.setter
-    def tunings(self, tunings):
+    def set_tunings(self, tunings):
         """
         Sets new tunings for the PID controller.
         
@@ -90,17 +90,15 @@ class PID_Controller:
         self.output_max = tunings.get("output_max", self.output_max)
         self.reset()
     
-    @property
-    def setpoint(self):
+    def get_setpoint(self):
         """
         Returns the current setpoint of the PID controller.
         
         :return: The current setpoint value
         """
         return self._setpoint
-    
-    @setpoint.setter
-    def setpoint(self, setpoint):
+
+    def set_setpoint(self, setpoint):
         """
         Sets a new setpoint for the PID controller.
         
@@ -109,34 +107,17 @@ class PID_Controller:
         """
         self._setpoint = setpoint
     
-    @property
-    def components(self):
+    def get_diagnostics(self):
         """
-        Returns the current PID components.
-        
-        :return: A dictionary containing the current PID components
+        Returns the PID controller's diagnostic information.
+
+        :return: A dictionary containing the PID controller's diagnostic information
         """
         return {
             "proportional": self._proportional,
             "integral": self._integral,
-            "derivative": self._derivative
+            "derivative": self._derivative,
+            "last_error": self._last_error,
+            "error": self._error
+
         }
-    
-    @property
-    def error(self):
-        """
-        Returns the error value.
-        
-        :return: The last error value
-        """
-        return self._error
-    
-    @error.setter
-    def error(self, value):
-        """
-        Sets the error value.
-        
-        :param value: The new error value
-        :return: None
-        """
-        self._error = value

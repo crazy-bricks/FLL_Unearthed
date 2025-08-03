@@ -1,6 +1,3 @@
-import builtins
-print(dir(builtins))
-
 from pybricks.parameters import Color, Button
 
 from config import *
@@ -9,6 +6,7 @@ from pose import Pose
 from movement import Movement
 from helper import debug_log
 
+from runs.debug_run import debug_run
 from runs.yellow_run import yellow_run
 
 robot = Robot()
@@ -17,6 +15,7 @@ mv = Movement(robot, pose)
 
 def main():
     attachments = {
+        Color.NONE: (debug_run,),
         Color.YELLOW: (yellow_run,)
     }
 
@@ -24,7 +23,7 @@ def main():
     current_color = Color.NONE
     
     while True:
-        top_color = robot.color_top.color()
+        top_color = robot.color_sensor.color()
 
         if current_color is not top_color:
             current_color = top_color
@@ -36,9 +35,10 @@ def main():
         if Button.RIGHT in pressed:
             funcs = attachments.get(current_color)
             if funcs:
+                debug_log("Running stage {} for color {}".format(stage, current_color), name="main")
                 funcs[stage](robot, mv)
             else:
-                debug_log("No valid attachment detected, color {}".format(current_color), name="attachment")
+                debug_log("No valid attachment detected, color {}".format(current_color), name="main")
         
         if Button.LEFT in pressed and current_color in attachments:
             stage = (stage + 1) % len(attachments[current_color])
