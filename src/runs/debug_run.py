@@ -7,4 +7,4 @@ def debug_run(robot: Robot, mv: Movement):
     if not DEBUG:
         return
     debug_log("Starting Debug Run", name="debug_run")
-    mv.straight(500)
+    mv.straight(1000)

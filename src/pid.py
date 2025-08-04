@@ -23,7 +23,7 @@ class PID_Controller:
         self._derivative = 0
 
         self._last_error = 0
-        self._error = 100000
+        self._error = float('inf')
     
     def update(self, input, d_time=1):
         """

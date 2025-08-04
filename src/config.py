@@ -35,15 +35,15 @@ PID_TURN = {
 
 ##############  MOVEMENT  ##############
 
-SPEED = 300         # mm/s
-SPEED_SLOW = 100    # mm/s
+SPEED = 500         # mm/s
+SPEED_SLOW = 250    # mm/s
 
 SPEED_TURN = 600    # deg/s
 
 TURN_TOLERANCE = 2  # degrees
 
 ACCEL_RATIO = 0.2
-DECEL_RATIO = 0.2
+DECEL_RATIO = 0.4
 
 ##############  MISC  ##############
 
