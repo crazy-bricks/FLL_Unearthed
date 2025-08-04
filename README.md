@@ -15,6 +15,8 @@ src/
   └── robot.py        # hardware abstraction
 
 models/               # 3d models of the robot and attachments
+requirements.txt      # PIP packages
+.gitignore            # Git config
 ```
 
 ## How to run

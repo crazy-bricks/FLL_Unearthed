@@ -14,10 +14,15 @@ pose = Pose(0, 0, 0)
 mv = Movement(robot, pose)
 
 def main():
+    debug_log("Starting main loop", name="main")
+    robot.hub.display.off()
+    # robot.hub.light.on(Color.PINK)
+
     attachments = {
         Color.NONE: (debug_run,),
         Color.YELLOW: (yellow_run,)
     }
+
 
     stage = 0
     current_color = Color.NONE

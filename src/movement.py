@@ -28,7 +28,58 @@ class Movement:
         self.pose.reset_angle()
         wait(250)
 
-    def straight(self, distance, speed=SPEED, target_angle=None, timeout=None):
+    def straight(
+            self,
+            distance,
+            start_speed=SPEED,
+            top_speed=SPEED,
+            end_speed=SPEED,
+            accel_ratio= ACCEL_RATIO,
+            decel_ratio= DECEL_RATIO,
+            target_angle=None,
+            timeout=None
+    ):
+        """
+        Moves the robot straight for a certain distance while accelerating and decelerating using the trapezoidal motion profile.
+
+        :param distance: Distance to move (in mm)
+        :param start_speed: Starting speed (in mm/s)
+        :param top_speed: Maximum speed (in mm/s)
+        :param end_speed: Ending speed (in mm/s)
+        :param target_angle: Target angle to maintain (in degrees)
+        :param timeout: Timeout for the movement (in seconds)
+        :return: None
+        """
+        self.robot.base.reset()
+
+        if target_angle is None:
+            target_angle = self.pose.angle
+        else:
+            self.pose.angle = target_angle
+
+        direction = -1 if distance > 0 else 1
+
+        timer = StopWatch()
+
+        controller = PID_Controller(PID_DRIVE, target_angle)
+
+        while abs(distance) > abs(self.robot.base.distance()):
+            # Get correction from PID
+            correction = controller.update(self.robot.hub.imu.heading())
+
+            debug_log("Distance: {}, Error: {}, Correction: {}".format(self.robot.base.distance(), controller._last_error, correction), name="drive")
+
+            self.robot.base.drive(direction * speed, correction)
+
+            if timeout is not None and timer.time() > timeout:
+                debug_log("Drive timeout reached", name="timeout")
+                break
+        self.robot.base.stop()
+        self.robot.left_motor.hold()
+        self.robot.right_motor.hold()
+        wait(100)
+
+    def _straight(self, distance, speed=SPEED, target_angle=None, timeout=None):
         """
         Moves the robot straight for a certain distance.
 

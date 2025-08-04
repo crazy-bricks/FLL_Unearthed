@@ -12,15 +12,15 @@ PORT_RIGHT_MOTOR = Port.D
 
 PORT_COLOR = Port.F
 
-WHEEL_DIAMETER = 49.5  # mm
+WHEEL_DIAMETER = 52.75  # mm
 AXLE_TRACK = 80  # mm
 
 ########## PID ##########
 
 PID_DRIVE = {
-    "kp": 3,
-    "ki": 0,
-    "kd": 0,
+    "kp": 4.5,
+    "ki": 0.0005,
+    "kd": 0.02,
     "i_max": 100,
     "output_max": None
 }
