@@ -1,4 +1,4 @@
-from helper import clamp
+from helper import clamp, debug_log
 from pybricks.tools import StopWatch
 
 class PID_Controller:
@@ -29,7 +29,7 @@ class PID_Controller:
         self._last_time = 0
         self._last_error = 0
     
-    def update(self, input):
+    def update(self, input, d_time=1):
         """
         Updates the PID controller with the new input value.
         
@@ -37,9 +37,6 @@ class PID_Controller:
         :return: The correction value
         """
         self._error = input - self._setpoint
-
-        d_time = self._timer.time() - self._last_time
-        
 
         self._proportional = self._error * self.kp * d_time
         self._integral += self._error * self.ki * d_time
@@ -49,8 +46,17 @@ class PID_Controller:
             self._integral = clamp(self._integral, self.i_limit[0], self.i_limit[1])
 
         correction = self._proportional + self._integral + self._derivative
+        
+        # debug_log("PID Update: P: {}, I: {}, D: {}, Correction: {}".format(
+        #     self._proportional,
+        #     self._integral,
+        #     self._derivative,
+        #     correction
+        # ), name="pid_update")
+
         if self.output_limit is not None:
             correction = clamp(correction, self.output_limit[0], self.output_limit[1])
+            # debug_log("Output limited to: {}, output_limit: {}".format(correction, self.output_limit), name="pid_output_limit")
 
         self._last_error = self._error
         self._last_time = self._timer.time()

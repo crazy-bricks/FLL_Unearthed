@@ -60,7 +60,7 @@ class Movement:
         else:
             self.pose.angle = target_angle
 
-        direction = -1 if distance > 0 else 1
+        direction = 1 if distance > 0 else -1
 
         accel_dist = abs(distance) * accel_ratio
         decel_dist = abs(distance) * decel_ratio
@@ -77,7 +77,7 @@ class Movement:
             # Get correction from PID
             correction = controller.update(self.robot.hub.imu.heading())
 
-            debug_log("Distance: {}, Error: {}, Correction: {}".format(self.robot.base.distance(), controller._last_error, correction), name="drive")
+            debug_log("Heading: {}, Error: {}".format(self.robot.hub.imu.heading(), controller._last_error), name="drive")
 
             if abs(self.robot.base.distance()) < accel_dist:
                 # Accelerating
@@ -91,7 +91,6 @@ class Movement:
                 speed = umath.sqrt(umath.pow(cruise_speed, 2) + (2 * deceleration * current_dist))
 
             speed = clamp(speed, min(start_speed, end_speed), cruise_speed)
-            debug_log("Speed: {}".format(speed), name="drive_speed")
 
             self.robot.base.drive(direction * speed, correction)
 
@@ -146,7 +145,7 @@ class Movement:
             self,
             angle,
             speed=SPEED_TURN,
-            max_speed=SPEED_SLOW,
+            max_speed=SPEED,
             wheel="right",
             turn_tolerance=TURN_TOLERANCE,
             timeout=None
@@ -166,23 +165,27 @@ class Movement:
         self.robot.right_drive.hold()
         
         target_angle = self.pose.angle + angle
-        direction = -1 if angle < 0 else 1
+        
+        direction = 1
+        output_limit = (speed, max_speed)
+
+        if angle > 0:
+            output_limit = (-max_speed, -speed)
 
         if wheel == "left":
             motor = self.robot.left_drive
             direction *= -1
         elif wheel == "right":
             motor = self.robot.right_drive
+        else:
+            raise ValueError("Invalid wheel: {}".format(wheel))
 
         timer = StopWatch()
 
-        output_limit = (max_speed, speed) if max_speed < speed else None
         controller = PID_Controller(PID_TURN, target_angle, output_limit=output_limit)
 
         while abs(controller.get_error()) > turn_tolerance:
             output = controller.update(self.robot.hub.imu.heading())
-            
-            debug_log("Turning: {}, Error: {}, Speed: {}".format(target_angle, controller.get_error(), output), name="turn")
 
             motor.run(output * direction)
 

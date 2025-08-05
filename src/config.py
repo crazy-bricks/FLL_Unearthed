@@ -17,7 +17,7 @@ AXLE_TRACK = 80  # mm
 
 ##############  MOVEMENT  ##############
 
-SPEED = 500         # mm/s
+SPEED = 600         # mm/s
 SPEED_SLOW = 250    # mm/s
 
 SPEED_TURN = 250    # mm/s
@@ -38,11 +38,11 @@ PID_DRIVE = {
 }
 
 PID_TURN = {
-    "kp": 1,
-    "ki": 0,
-    "kd": 0,
+    "kp": 10.0,
+    "ki": 0.0,
+    "kd": 0.00001,
     "i_limit": (-100, 100),
-    "output_limit": (SPEED_TURN, SPEED_SLOW)
+    "output_limit": None
 }
 
 ##############  MISC  ##############
