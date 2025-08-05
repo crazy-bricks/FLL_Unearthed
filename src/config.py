@@ -39,8 +39,8 @@ PID_DRIVE = {
 
 PID_TURN = {
     "kp": 10.0,
-    "ki": 0.0,
-    "kd": 0.0002,
+    "ki": 0.005,
+    "kd": 0.002,
     "i_limit": (-100, 100),
     "output_limit": None
 }
