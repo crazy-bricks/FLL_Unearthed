@@ -1,5 +1,7 @@
 import umath
 from pybricks.tools import wait, StopWatch
+from pybricks.parameters import Direction
+
 from config import *
 from helper import clamp, debug_log
 from pid import PID_Controller
@@ -19,13 +21,13 @@ class Movement:
         self.robot = robot
         self.pose = pose
 
-    def reset_gyro(self):
+    def reset(self):
         """
         Resets the gyro angle and the pose angle
         :return: None
         """
         wait(250)
-        self.robot.gyro.reset_angle(0)
+        self.robot.hub.imu.reset_heading(0)
         self.pose.reset_angle()
         wait(250)
 
@@ -138,4 +140,48 @@ class Movement:
         self.robot.base.stop()
         self.robot.left_motor.hold()
         self.robot.right_motor.hold()
+        wait(100)
+
+    def turn(
+            self,
+            angle,
+            speed=SPEED_TURN,
+            wheel="right",
+            turn_tolerance=TURN_TOLERANCE,
+            timeout=None
+        ):
+        """
+        Turns the robot by a certain angle at a steady speed.
+        
+        :param angle: Angle to turn by (in degrees)
+        :param speed: Speed to turn (in deg/s)
+        :param wheel: Wheel to use (left or right)
+        :param timeout: Timeout for the movement (in seconds)
+        :return: None
+        """
+        self.robot.base.reset()
+        
+        target_angle = self.pose.angle + angle
+        direction = -1 if angle < 0 else 1
+
+        if wheel == "left":
+            motor = self.robot.left_drive
+            direction *= -1
+        elif wheel == "right":
+            motor = self.robot.right_drive
+
+        timer = StopWatch()
+
+        controller = PID_Controller(PID_TURN, target_angle)
+
+        while abs(controller.get_error()) > turn_tolerance:
+            output = controller.update(self.robot.hub.imu.heading())
+            debug_log("Turning: {}, Error: {}, Speed: {}".format(target_angle, controller.get_error(), output), name="turn")
+
+            motor.run(output * direction)
+            if timeout is not None and timer.time() > timeout:
+                debug_log("Turn timeout reached", name="timeout")
+                break
+        motor.hold()
+        self.pose.angle += angle
         wait(100)
