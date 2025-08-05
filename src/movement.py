@@ -174,13 +174,14 @@ class Movement:
         
         target_angle = self.pose.angle + angle
 
-        output_limit = None
 
         if wheel == "left":
             direction = 1
+            output_limit = (speed, max_speed)
             motor = self.robot.left_drive
         elif wheel == "right":
             direction = -1
+            output_limit = (-max_speed, -speed)
             motor = self.robot.right_drive
         else:
             raise ValueError("Invalid wheel: {}".format(wheel))
@@ -192,7 +193,8 @@ class Movement:
         while abs(controller.get_error()) > turn_tolerance:
             output = controller.update(self.robot.hub.imu.heading())
 
-            debug_log("Target: {}, Yaw: {}, Error: {}, Output: {}, Direction: {}, Speed: {}".format(target_angle, self.robot.hub.imu.heading(), controller.get_error(), output, direction, output*direction), name="turn")
+            # debug_log("Target: {}, Yaw: {}, Error: {}, Output: {}, Direction: {}, Speed: {}".format(target_angle, self.robot.hub.imu.heading(), controller.get_error(), output, direction, output*direction), name="turn")
+            print(controller.get_error())
 
             motor.run(output * direction)
 

@@ -8,6 +8,9 @@ def debug_run(robot: Robot, mv: Movement):
         return
     debug_log("Starting Debug Run", name="debug_run")
 
+    mv.turn(90, wheel="left")
+    return
+
     mv.straight(200)
     mv.turn(90, wheel="right")
     mv.straight(-200)
