@@ -21,7 +21,7 @@ class Movement:
         self.robot = robot
         self.pose = pose
 
-    def reset(self):
+    def reset_gyro(self):
         """
         Resets the gyro angle and the pose angle
         :return: None
@@ -100,6 +100,11 @@ class Movement:
         self.robot.base.stop()
         self.robot.left_motor.hold()
         self.robot.right_motor.hold()
+        if DEBUG:
+            # Odometry
+            X = self.robot.base.distance() * umath.cos(umath.radians(self.robot.hub.imu.heading()))
+            Y = self.robot.base.distance() * umath.sin(umath.radians(self.robot.hub.imu.heading()))
+            self.pose.set_coordinates(X, Y)
         wait(100)
 
     def steady(self, distance, speed=SPEED, target_angle=None, timeout=None):
@@ -137,6 +142,11 @@ class Movement:
         self.robot.base.stop()
         self.robot.left_motor.hold()
         self.robot.right_motor.hold()
+        if DEBUG:
+            # Odometry
+            X = self.robot.base.distance() * umath.cos(umath.radians(self.robot.hub.imu.heading()))
+            Y = self.robot.base.distance() * umath.sin(umath.radians(self.robot.hub.imu.heading()))
+            self.pose.set_coordinates(X, Y)
         wait(100)
 
     def turn(

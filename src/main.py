@@ -41,7 +41,8 @@ def main():
             funcs = attachments.get(current_color)
             if funcs:
                 debug_log("Running stage {} for color {}".format(stage, current_color), name="main")
-                mv.reset()
+                pose.reset()
+                mv.reset_gyro()
                 funcs[stage](robot, mv)
             else:
                 debug_log("No valid attachment detected, color {}".format(current_color), name="main")
