@@ -1,9 +1,10 @@
 from helper import clamp
+from pybricks.tools import StopWatch
 
 class PID_Controller:
     """A PID controller class implementation"""
 
-    def __init__(self, config, setpoint):
+    def __init__(self, config, setpoint, output_limit=None):
         """
         Initializes the PID controller with the given configuration and setpoint.
         
@@ -14,7 +15,7 @@ class PID_Controller:
         self.ki = config.get("ki", 0)
         self.kd = config.get("kd", 0)
         self.i_limit = config.get("i_limit", None)
-        self.output_limit = config.get("output_limit", None)
+        self.output_limit = output_limit if output_limit else config.get("output_limit", None)
 
         self._setpoint = setpoint
 
@@ -22,21 +23,27 @@ class PID_Controller:
         self._integral = 0
         self._derivative = 0
 
-        self._last_error = 0
+        self._timer = StopWatch()
         self._error = float('inf')
+
+        self._last_time = 0
+        self._last_error = 0
     
-    def update(self, input, d_time=1):
+    def update(self, input):
         """
         Updates the PID controller with the new input value.
         
         :param input: The current input value
         :return: The correction value
         """
-        error = input - self._setpoint
+        self._error = input - self._setpoint
 
-        self._proportional = error * self.kp * d_time
-        self._integral += error * self.ki * d_time
-        self._derivative = ((error - self._last_error) / d_time) * self.kd if d_time > 0 else 0
+        d_time = self._timer.time() - self._last_time
+        
+
+        self._proportional = self._error * self.kp * d_time
+        self._integral += self._error * self.ki * d_time
+        self._derivative = ((self._error - self._last_error) / d_time) * self.kd if d_time > 0 else 0
 
         if self.i_limit is not None:
             self._integral = clamp(self._integral, self.i_limit[0], self.i_limit[1])
@@ -45,8 +52,8 @@ class PID_Controller:
         if self.output_limit is not None:
             correction = clamp(correction, self.output_limit[0], self.output_limit[1])
 
-        self._last_error = error
-        self._error = error
+        self._last_error = self._error
+        self._last_time = self._timer.time()
         return correction
     
     def reset(self):

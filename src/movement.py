@@ -146,6 +146,7 @@ class Movement:
             self,
             angle,
             speed=SPEED_TURN,
+            max_speed=SPEED_SLOW,
             wheel="right",
             turn_tolerance=TURN_TOLERANCE,
             timeout=None
@@ -154,12 +155,15 @@ class Movement:
         Turns the robot by a certain angle at a steady speed.
         
         :param angle: Angle to turn by (in degrees)
-        :param speed: Speed to turn (in deg/s)
+        :param speed: Speed to turn (in mm/s)
+        :param max_speed: Maximum speed to turn (in mm/s)
         :param wheel: Wheel to use (left or right)
         :param timeout: Timeout for the movement (in seconds)
         :return: None
         """
         self.robot.base.reset()
+        self.robot.left_drive.hold()
+        self.robot.right_drive.hold()
         
         target_angle = self.pose.angle + angle
         direction = -1 if angle < 0 else 1
@@ -172,13 +176,16 @@ class Movement:
 
         timer = StopWatch()
 
-        controller = PID_Controller(PID_TURN, target_angle)
+        output_limit = (max_speed, speed) if max_speed < speed else None
+        controller = PID_Controller(PID_TURN, target_angle, output_limit=output_limit)
 
         while abs(controller.get_error()) > turn_tolerance:
             output = controller.update(self.robot.hub.imu.heading())
+            
             debug_log("Turning: {}, Error: {}, Speed: {}".format(target_angle, controller.get_error(), output), name="turn")
 
             motor.run(output * direction)
+
             if timeout is not None and timer.time() > timeout:
                 debug_log("Turn timeout reached", name="timeout")
                 break
