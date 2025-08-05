@@ -32,5 +32,5 @@ source ./.venv/bin/activate # mac/linux
 pip install -r ./requirements.txt
 
 # Run
-pybricksdev run -n [NAME] ble src/main.py # or use vscode config
+pybricksdev run -n BRICK_7 ble src/main.py # or use vscode config
 ```

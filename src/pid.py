@@ -119,5 +119,4 @@ class PID_Controller:
             "derivative": self._derivative,
             "last_error": self._last_error,
             "error": self._error
-
         }
