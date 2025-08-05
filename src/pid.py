@@ -24,10 +24,9 @@ class PID_Controller:
         self._derivative = 0
 
         self._timer = StopWatch()
-        self._error = float('inf')
 
         self._last_time = 0
-        self._last_error = 0
+        self._last_error = float('inf')
     
     def update(self, input, d_time=1):
         """
@@ -36,29 +35,33 @@ class PID_Controller:
         :param input: The current input value
         :return: The correction value
         """
-        self._error = input - self._setpoint
+        error = self._setpoint - input
 
-        self._proportional = self._error * self.kp * d_time
-        self._integral += self._error * self.ki * d_time
-        self._derivative = ((self._error - self._last_error) / d_time) * self.kd if d_time > 0 else 0
+        if d_time <= 0:
+            d_time = 1
+
+        self._proportional = error * self.kp * d_time
+        self._integral += error * self.ki * d_time
+        self._derivative = ((error - self._last_error) / d_time) * self.kd if d_time > 0 else 0
 
         if self.i_limit is not None:
             self._integral = clamp(self._integral, self.i_limit[0], self.i_limit[1])
 
         correction = self._proportional + self._integral + self._derivative
-        
-        # debug_log("PID Update: P: {}, I: {}, D: {}, Correction: {}".format(
-        #     self._proportional,
-        #     self._integral,
-        #     self._derivative,
-        #     correction
-        # ), name="pid_update")
+
+        correction_before_limit = correction
 
         if self.output_limit is not None:
             correction = clamp(correction, self.output_limit[0], self.output_limit[1])
-            # debug_log("Output limited to: {}, output_limit: {}".format(correction, self.output_limit), name="pid_output_limit")
 
-        self._last_error = self._error
+        # debug_log("Error: {}, Correction: {}, Before Limit: {}, Output Limits: {}".format(
+        #     error,
+        #     correction,
+        #     correction_before_limit,
+        #     self.output_limit
+        # ), name="pid_output_limit")
+
+        self._last_error = error
         self._last_time = self._timer.time()
         return correction
     
@@ -140,4 +143,4 @@ class PID_Controller:
         
         :return: The current error value
         """
-        return self._error
+        return self._last_error
