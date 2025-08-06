@@ -1,4 +1,5 @@
 from pybricks.parameters import Port, Axis
+from pybricks.tools import Matrix
 
 ########## ROBOT ##########
 
@@ -48,3 +49,11 @@ PID_TURN = {
 ##############  MISC  ##############
 
 DEBUG = True
+
+YELLOW_MATRIX = Matrix([
+    [0, 100, 0, 100, 0],
+    [0, 100, 0, 100, 0],
+    [0, 0, 100, 0, 0],
+    [0, 0, 100, 0, 0],
+    [0, 0, 0, 0, 0]
+])

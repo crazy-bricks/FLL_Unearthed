@@ -1,4 +1,5 @@
 from pybricks.parameters import Color, Button
+from pybricks.tools import Matrix, wait
 
 from config import *
 from robot import Robot
@@ -23,6 +24,10 @@ def main():
         Color.YELLOW: (yellow_run,)
     }
 
+    light_matrices = {
+        Color.YELLOW: (YELLOW_MATRIX,),
+        Color.NONE: (Matrix([[0] * 5] * 5),)
+    }
 
     stage = 0
     current_color = Color.NONE
@@ -33,7 +38,12 @@ def main():
         if current_color is not top_color:
             current_color = top_color
             robot.hub.light.on(top_color)
+            if current_color == Color.NONE:
+                robot.hub.light.on(Color.MAGENTA)
             stage = 0
+        
+        if current_color in light_matrices:
+                robot.hub.display.icon(light_matrices[current_color][stage])
 
         pressed = robot.hub.buttons.pressed()
 
@@ -49,6 +59,7 @@ def main():
         
         if Button.LEFT in pressed and current_color in attachments:
             stage = (stage + 1) % len(attachments[current_color])
+            wait(250)
 
 
 if __name__ == "__main__":
