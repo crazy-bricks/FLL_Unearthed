@@ -34,12 +34,12 @@ def main():
     
     while True:
         top_color = robot.color_sensor.color()
+        robot.hub.light.on(top_color)
+        if current_color == Color.NONE:
+            robot.hub.light.on(Color.MAGENTA)
 
         if current_color is not top_color:
             current_color = top_color
-            robot.hub.light.on(top_color)
-            if current_color == Color.NONE:
-                robot.hub.light.on(Color.MAGENTA)
             stage = 0
         
         if current_color in light_matrices:
