@@ -1,0 +1,1 @@
+pybricksdev run -n BRICK_7 ble src/main.py

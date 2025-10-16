@@ -9,6 +9,11 @@ from helper import debug_log
 
 from runs.debug_run import debug_run
 from runs.yellow_run import yellow_run
+from runs.orange_run import orange_run
+from runs.white_run import white_run
+from runs.blue_run import blue_run
+from runs.red_run import red_run
+from runs.green_run import green_run
 
 robot = Robot()
 pose = Pose(0, 0, 0)
@@ -21,11 +26,21 @@ def main():
 
     attachments = {
         Color.NONE: (debug_run,),
-        Color.YELLOW: (yellow_run,)
+        Color.YELLOW: (yellow_run,),
+        Color.BLACK: (orange_run,),
+        Color.WHITE: (white_run,),
+        Color.BLUE: (blue_run,),
+        Color.RED: (red_run,),
+        Color.GREEN: (green_run,)
     }
 
     light_matrices = {
         Color.YELLOW: (YELLOW_MATRIX,),
+        Color.BLACK: (ORANGE_MATRIX,),
+        Color.WHITE: (WHITE_MATRIX,),
+        Color.BLUE: (BLUE_MATRIX,),
+        Color.RED: (RED_MATRIX,),
+        Color.GREEN: (GREEN_MATRIX,),
         Color.NONE: (Matrix([[0] * 5] * 5),)
     }
 
