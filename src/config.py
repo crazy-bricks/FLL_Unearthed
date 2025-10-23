@@ -13,7 +13,7 @@ PORT_RIGHT_MOTOR = Port.D
 
 PORT_COLOR = Port.F
 
-WHEEL_DIAMETER = 52.75  # mm
+WHEEL_DIAMETER = 49.5  # mm
 AXLE_TRACK = 80  # mm
 
 ##############  MOVEMENT  ##############
@@ -25,8 +25,8 @@ SPEED_TURN = 250    # mm/s
 
 TURN_TOLERANCE = 2  # degrees
 
-ACCEL_RATIO = 0.2
-DECEL_RATIO = 0.4
+ACCEL_RATIO = 2.0
+DECEL_RATIO = 2.0
 
 ########## PID ##########
 
@@ -67,10 +67,10 @@ WHITE_MATRIX = Matrix([
 ])
 
 ORANGE_MATRIX = Matrix([
-    [0  , 0  , 100 ,0  , 0],
+    [0  , 100 , 100 ,0  , 0],
     [0  , 100, 0  , 100, 0],
     [0  , 100, 0  , 100, 0],
-    [0  , 0  , 100, 0  , 0],
+    [0  , 0  , 100, 100, 0],
     [0  , 0  , 0  , 0  , 0]
 ])
 

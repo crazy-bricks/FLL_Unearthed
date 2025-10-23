@@ -61,36 +61,24 @@ class Movement:
             self.pose.angle = target_angle
 
         direction = 1 if distance > 0 else -1
-
-        accel_dist = abs(distance) * accel_ratio
-        decel_dist = abs(distance) * decel_ratio
-        cruise_dist = abs(distance) - accel_dist - decel_dist
-
-        acceleration = (pow(cruise_speed, 2) - pow(start_speed, 2)) / (2 * accel_dist)
-        deceleration = (pow(end_speed, 2) - pow(cruise_speed, 2)) / (2 * decel_dist)
+        distance = abs(distance)
 
         timer = StopWatch()
 
         controller = PID_Controller(PID_DRIVE, target_angle)
 
-        while abs(distance) > abs(self.robot.base.distance()):
+        while distance > abs(self.robot.base.distance()):
+            nowDist = abs(self.robot.base.distance())
             # Get correction from PID
             correction = controller.update(self.robot.hub.imu.heading())
 
             debug_log("Target: {}, Yaw: {}".format(target_angle, self.robot.hub.imu.heading()), name="drive")
 
-            if abs(self.robot.base.distance()) < accel_dist:
-                # Accelerating
-                speed = umath.sqrt(umath.pow(start_speed, 2) + (2 * acceleration * abs(self.robot.base.distance())))
-            elif abs(self.robot.base.distance()) < (accel_dist + cruise_dist):
-                # Cruising
-                speed = cruise_speed
-            elif abs(self.robot.base.distance()) < (accel_dist + cruise_dist + decel_dist):
-                # Decelerating
-                current_dist = abs(self.robot.base.distance()) - (accel_dist + cruise_dist)
-                speed = umath.sqrt(umath.pow(cruise_speed, 2) + (2 * deceleration * current_dist))
+            va = accel_ratio*nowDist + start_speed
 
-            speed = clamp(speed, min(start_speed, end_speed), cruise_speed)
+            vd = -decel_ratio*(nowDist - distance) + end_speed
+
+            speed = min(cruise_speed, va, vd)
 
             self.robot.base.drive(direction * speed, correction)
 

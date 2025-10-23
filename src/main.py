@@ -25,9 +25,9 @@ def main():
     # robot.hub.light.on(Color.PINK)
 
     attachments = {
-        Color.NONE: (debug_run,),
+        # Color.NONE: (debug_run,),
         Color.YELLOW: (yellow_run,),
-        Color.BLACK: (orange_run,),
+        Color.NONE: (orange_run,),
         Color.WHITE: (white_run,),
         Color.BLUE: (blue_run,),
         Color.RED: (red_run,),
@@ -36,21 +36,24 @@ def main():
 
     light_matrices = {
         Color.YELLOW: (YELLOW_MATRIX,),
-        Color.BLACK: (ORANGE_MATRIX,),
+        Color.NONE: (ORANGE_MATRIX,),
         Color.WHITE: (WHITE_MATRIX,),
         Color.BLUE: (BLUE_MATRIX,),
         Color.RED: (RED_MATRIX,),
         Color.GREEN: (GREEN_MATRIX,),
-        Color.NONE: (Matrix([[0] * 5] * 5),)
     }
 
     stage = 0
-    current_color = Color.NONE
+    current_color = Color.BLACK
     
     while True:
         top_color = robot.color_sensor.color()
-        robot.hub.light.on(top_color)
-        if current_color == Color.NONE:
+        if (top_color == Color.NONE):
+            robot.hub.light.on(Color.ORANGE)
+        else:
+            robot.hub.light.on(top_color)
+        
+        if current_color == Color.BLACK:
             robot.hub.light.on(Color.MAGENTA)
 
         if current_color is not top_color:
