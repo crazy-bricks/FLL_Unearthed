@@ -20,7 +20,7 @@ def orange_run(robot: Robot, mv: Movement):
         robot.right_motor.run_target(10000, 0)
         robot.right_motor.run_target(10000, 60)
     robot.right_motor.run_target(10000, 0)
-    robot.right_motor.run_target(10000, 30)
+    robot.right_motor.run_target(10000, 50)
 
     mv.turn(-35)
     robot.left_motor.run_target(leftSpeed, -90)
@@ -43,7 +43,7 @@ def orange_run(robot: Robot, mv: Movement):
 
     mv.straight(5)
     
-    robot.right_motor.run_target(rightSpeed, -100)
+    robot.right_motor.run_target(rightSpeed, -30)
     robot.right_drive.run_angle(1000, 200)
 
     mv.turn(-25)

@@ -8,6 +8,32 @@ from pid import PID_Controller
 from pose import Pose
 from robot import Robot
 
+def _clamp(x, lo, hi):
+    return hi if x > hi else lo if x < lo else x
+
+
+def _accel_factor(traveled_deg: float,
+                  accel_angle: float,
+                  start_accel_factor: float) -> float:
+    if accel_angle <= 0:
+        return 1.0
+    t = _clamp(traveled_deg / float(accel_angle), 0.0, 1.0)
+    return start_accel_factor + (1.0 - start_accel_factor) * t
+
+
+def _is_stuck(stopwatch: StopWatch, lastCheckTime, lastError, error):
+    currentTime = stopwatch.time()
+
+    if currentTime - lastCheckTime < 1:
+        return False, lastCheckTime, lastError
+    
+    if abs(error) >= 20:
+        if lastError > 0 and lastError - error < 5:
+            return True, currentTime, error
+        elif lastError < 0 and lastError - error > -5:
+            return True, currentTime, error
+    return False, currentTime, error
+
 class Movement:
     """A class for handling robot movement"""
 
@@ -137,7 +163,7 @@ class Movement:
             self.pose.set_coordinates(X, Y)
         wait(100)
 
-    def turn(
+    def turn_on_one(
             self,
             angle,
             speed=SPEED_TURN,
@@ -190,3 +216,89 @@ class Movement:
         motor.hold()
         self.pose.angle = target_angle
         wait(100)
+
+    def turnTo(
+        self,
+        angle: int,
+        tolerance: int = TURN_TOLERANCE,
+        speed: int = SPEED_TURN,
+        left_powerup: int = 0,
+        right_powerup: int = 0,
+        stop_at_end: bool = True,
+
+        accel_angle: float = 10.0,
+        start_accel_factor: float = 0.3,
+    ):
+
+        target_angle = self.pose.angle + angle
+        now_dir: int = self.robot.hub.imu.heading()
+        if 0 == target_angle:
+            return
+
+        rKp, rKi, rKd = PID_TURN
+
+        start_angle = now_dir
+        integral: float = 0.0
+        last_error: float = 0.0
+
+        stopwatch = StopWatch()
+        last_check_ms = stopwatch.time()
+        last_stuck_error = 0.0
+
+        speed_limit: float = SPEED
+        I_limit: float = 15.0
+
+        wait(40)
+
+        while True:
+            now_dir = self.robot.hub.imu.heading()
+
+            error: float = target_angle - now_dir
+
+            if abs(error) <= tolerance:
+                break
+
+            derivative = error - last_error
+            integral += error
+            integral = _clamp(integral, -I_limit, I_limit)
+
+            output: float = rKp * error + rKi * integral + rKd * derivative
+
+            traveled = abs(now_dir - start_angle)
+            a = _accel_factor(traveled, accel_angle, start_accel_factor)
+
+            l_speed: float = -output * (speed + left_powerup) * a
+            r_speed: float =  output * (speed + right_powerup) * a
+
+            l_speed = _clamp(l_speed, -speed_limit, speed_limit)
+            r_speed = _clamp(r_speed, -speed_limit, speed_limit)
+
+            self.robot.left_drive.run(l_speed)
+            self.robot.right_drive.run(r_speed)
+
+            stuck, last_check_ms, last_stuck_error = _is_stuck(
+                stopwatch,
+                last_check_ms,
+                last_stuck_error,
+                error
+            )
+
+            if stuck:
+                self.robot.left_drive.brake()
+                self.robot.right_drive.brake()
+
+                nudge = int(max(80, abs(speed) * a))
+                self.robot.left_drive.run(-nudge)
+                self.robot.right_drive.run(+nudge)
+                wait(120)   # ~0.12 s
+
+                start_angle = self.robot.hub.imu.heading()
+
+            last_error = error
+
+            wait(40)
+
+        if stop_at_end:
+            self.robot.left_drive.hold()
+            self.robot.right_drive.hold()
+
