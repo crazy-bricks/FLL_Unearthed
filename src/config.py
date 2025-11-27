@@ -21,9 +21,9 @@ AXLE_TRACK = 80  # mm
 SPEED = 600         # mm/s
 SPEED_SLOW = 250    # mm/s
 
-SPEED_TURN = 250    # mm/s
+SPEED_TURN = 220    # mm/s
 
-TURN_TOLERANCE = 2  # degrees
+TURN_TOLERANCE = 3  # degrees
 
 ACCEL_RATIO = 2.0
 DECEL_RATIO = 2.0
@@ -31,17 +31,17 @@ DECEL_RATIO = 2.0
 ########## PID ##########
 
 PID_DRIVE = {
-    "kp": 4.5,
-    "ki": 0.0005,
-    "kd": 0.02,
+    "kp": 3.0,
+    "ki": 0,
+    "kd": 0,
     "i_limit": (-100, 100),
     "output_limit": None
 }
 
 PID_TURN = {
-    "kp": 10.0,
-    "ki": 0.005,
-    "kd": 0.002,
+    "kp": 0.036, # 10
+    "ki": 0.01,
+    "kd": 0.02,
     "i_limit": (-100, 100),
     "output_limit": None
 }

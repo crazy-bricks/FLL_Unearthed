@@ -217,7 +217,7 @@ class Movement:
         self.pose.angle = target_angle
         wait(100)
 
-    def turnTo(
+    def turn(
         self,
         angle: int,
         tolerance: int = TURN_TOLERANCE,
@@ -230,12 +230,10 @@ class Movement:
         start_accel_factor: float = 0.3,
     ):
 
-        target_angle = self.pose.angle + angle
+        target_angle = angle
         now_dir: int = self.robot.hub.imu.heading()
-        if 0 == target_angle:
-            return
 
-        rKp, rKi, rKd = PID_TURN
+        rKp, rKi, rKd = PID_TURN["kp"], PID_TURN["ki"], PID_TURN["kd"]
 
         start_angle = now_dir
         integral: float = 0.0
@@ -267,8 +265,8 @@ class Movement:
             traveled = abs(now_dir - start_angle)
             a = _accel_factor(traveled, accel_angle, start_accel_factor)
 
-            l_speed: float = -output * (speed + left_powerup) * a
-            r_speed: float =  output * (speed + right_powerup) * a
+            l_speed: float =  output * (speed + left_powerup) * a
+            r_speed: float = -output * (speed + right_powerup) * a
 
             l_speed = _clamp(l_speed, -speed_limit, speed_limit)
             r_speed = _clamp(r_speed, -speed_limit, speed_limit)
@@ -276,29 +274,32 @@ class Movement:
             self.robot.left_drive.run(l_speed)
             self.robot.right_drive.run(r_speed)
 
-            stuck, last_check_ms, last_stuck_error = _is_stuck(
-                stopwatch,
-                last_check_ms,
-                last_stuck_error,
-                error
-            )
+            # stuck, last_check_ms, last_stuck_error = _is_stuck(
+            #     stopwatch,
+            #     last_check_ms,
+            #     last_stuck_error,
+            #     error
+            # )
 
-            if stuck:
-                self.robot.left_drive.brake()
-                self.robot.right_drive.brake()
+            # if stuck:
+            #     self.robot.left_drive.brake()
+            #     self.robot.right_drive.brake()
 
-                nudge = int(max(80, abs(speed) * a))
-                self.robot.left_drive.run(-nudge)
-                self.robot.right_drive.run(+nudge)
-                wait(120)   # ~0.12 s
+            #     nudge = int(max(80, abs(speed) * a))
+            #     self.robot.left_drive.run(-nudge)
+            #     self.robot.right_drive.run(+nudge)
+            #     wait(120)   # ~0.12 s
 
-                start_angle = self.robot.hub.imu.heading()
+            #     start_angle = self.robot.hub.imu.heading()
 
             last_error = error
 
-            wait(40)
+            wait(10)
 
         if stop_at_end:
             self.robot.left_drive.hold()
             self.robot.right_drive.hold()
+
+        self.pose.angle = target_angle
+        wait(100)
 
