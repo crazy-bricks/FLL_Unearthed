@@ -31,8 +31,8 @@ DECEL_RATIO = 2.0
 ########## PID ##########
 
 PID_DRIVE = {
-    "kp": 3.0,
-    "ki": 0,
+    "kp": 4.0, #3
+    "ki": 0.001,
     "kd": 0,
     "i_limit": (-100, 100),
     "output_limit": None
