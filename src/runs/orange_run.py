@@ -25,18 +25,18 @@ def orange_run(robot: Robot, mv: Movement):
         wait(100)
     robot.right_motor.run_target(10000, 0)
     wait(100)
-    robot.right_motor.run_target(10000, 55)
+    robot.right_motor.run_target(10000, 52)
 
     mv.turn(-35)
     robot.left_motor.run_target(leftSpeed, -120)
     mv.straight(240)
 
     mv.turn(40, speed=200)
-    mv.straight(30)
+    mv.straight(34)
 
     mv.turn(10, speed= 400)
     robot.right_motor.run_target(rightSpeed, 160)
-    mv.turn(42)
+    mv.turn(42, speed=160)
     robot.left_motor.run_target(leftSpeed, -50)
 
     mv.straight(160, cruise_speed= 120, start_speed=60, end_speed=60)
@@ -45,25 +45,27 @@ def orange_run(robot: Robot, mv: Movement):
     mv.turn(80, speed= 400)
     robot.left_motor.run_target(leftSpeed, -200)
     mv.turn(50)
-    mv.straight(-125)
+    mv.straight(-120)
 
-    mv.turn(0, speed=180)
+    mv.turn(2, speed=180)
     robot.right_motor.run_target(rightSpeed, 10)
-    mv.straight(38)
+    mv.straight(50)
 
+    # flip rief
     mv.turn(-22, speed=400)
     mv.straight(-30)
     mv.turn(-72)
     robot.right_motor.run_target(rightSpeed, 190)
 
-    mv.straight(280)
+    mv.straight(300)
     mv.turn(-162)
-    mv.straight(14)
+    mv.straight(12)
     robot.right_motor.run_target(rightSpeed, 10)
     robot.right_motor.run_target(rightSpeed, 160)
 
-    mv.turn(-45, speed=180)
-    mv.straight(-130, cruise_speed=800, start_speed=800, end_speed=800)
+    mv.turn(-45, speed=210)
+    mv.straight(100)
+    mv.straight(-300, cruise_speed=8000, start_speed=8000, end_speed=8000)
 
     mv.turn(-90)
     mv.straight(-150)
