@@ -20,6 +20,7 @@ pose = Pose(0, 0, 0)
 mv = Movement(robot, pose)
 
 def main():
+    print("Hello world")
     debug_log("Starting main loop", name="main")
     robot.hub.display.off()
     # robot.hub.light.on(Color.PINK)

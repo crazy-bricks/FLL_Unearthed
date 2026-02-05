@@ -6,12 +6,12 @@ from pybricks.tools import Matrix
 HUB_TOP = Axis.Z
 HUB_FRONT = Axis.Y
 
-PORT_LEFT_DRIVE = Port.A
-PORT_RIGHT_DRIVE = Port.B
-PORT_LEFT_MOTOR = Port.E
+PORT_LEFT_DRIVE = Port.B
+PORT_RIGHT_DRIVE = Port.A
+PORT_LEFT_MOTOR = Port.C
 PORT_RIGHT_MOTOR = Port.D
 
-PORT_COLOR = Port.F
+PORT_COLOR = Port.E
 
 WHEEL_DIAMETER = 49.5  # mm
 AXLE_TRACK = 80  # mm
