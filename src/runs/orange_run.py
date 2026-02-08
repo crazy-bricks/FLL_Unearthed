@@ -11,66 +11,74 @@ def orange_run(robot: Robot, mv: Movement):
 
     mv.straight(-20)
     mv.reset_gyro()
-    robot.left_motor.reset_angle(0)
-    robot.right_motor.reset_angle(0)
+    mv.reset_left()
+    mv.reset_right()
 
-    robot.right_motor.run_target(rightSpeed, 180)
+    mv.move_right_to(rightSpeed, 180)
     mv.straight(320)
     # mv.straight(1000)
 
+    """Shoot stones from cliff"""
     for x in range(3):
-        robot.right_motor.run_target(10000, -20)
+        mv.move_right_to(10000, -20)
         wait(100)
-        robot.right_motor.run_target(10000, 190)
+        mv.move_right_to(10000, 190)
         wait(100)
-    robot.right_motor.run_target(10000, 0)
+    mv.move_right_to(10000, 0)
     wait(100)
-    robot.right_motor.run_target(10000, 58)
+    mv.move_right_to(10000, 58)
 
+    """Dislodge rocks"""
     mv.turn(-35)
-    robot.left_motor.run_target(leftSpeed, -120)
+    mv.move_left_to(leftSpeed, -120)
     mv.straight(265)
 
     mv.turn(40, speed=200)
     mv.straight(50)
 
     mv.turn(10, speed= 400)
-    robot.right_motor.run_target(rightSpeed, 160)
+    mv.move_right_to(rightSpeed, 160)
     mv.turn(42, speed=160)
-    robot.left_motor.run_target(leftSpeed, -50)
+    mv.move_left_to(leftSpeed, -50)
 
     mv.straight(160, cruise_speed= 120, start_speed=60, end_speed=60)
-    robot.left_motor.run_target(leftSpeed, -70)
+    mv.move_left_to(leftSpeed, -70)
+
+    """Put artefact behind rocks to the base area"""
     mv.turn(50)
     mv.turn(80, speed= 400)
-    robot.left_motor.run_target(leftSpeed, -200)
+    mv.move_left_to(leftSpeed, -200)
     mv.turn(50)
     mv.straight(-120)
 
     mv.turn(3, speed=180)
-    robot.right_motor.run_target(rightSpeed, 10)
+    mv.move_right_to(rightSpeed, 10)
     mv.straight(60)
 
-    # flip rief
+    """flip rief"""
     mv.turn(-22, speed=400)
     mv.straight(-32)
     mv.turn(-70)
-    robot.right_motor.run_target(rightSpeed, 190)
+    mv.move_right_to(rightSpeed, 190)
 
     mv.straight(300)
     mv.turn(-157)
     mv.straight(12)
-    robot.right_motor.run_target(rightSpeed, 10)
-    robot.right_motor.run_target(rightSpeed, 160)
 
+    """Put basket to the ground"""
+    mv.move_right_to(rightSpeed, 10)
+    mv.move_right_to(rightSpeed, 160)
+
+    """Put up the table"""
     mv.turn(-250)
     mv.straight(-100)
     mv.turn(-220)
-    robot.right_motor.run_target(rightSpeed, 10)
+    mv.move_right_to(rightSpeed, 10)
     mv.straight(270)
 
+    """Return to base"""
     mv.straight(-70)
-    robot.right_motor.run_target(rightSpeed, 160)
+    mv.move_right_to(rightSpeed, 160)
     mv.turn(-270)
     mv.straight(220)
     mv.turn(-210)

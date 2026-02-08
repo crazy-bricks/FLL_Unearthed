@@ -121,6 +121,18 @@ class Movement:
             self.pose.set_coordinates(X, Y)
         wait(100)
 
+    def move_right_to(self, speed = 600, angle = 0):
+        self.robot.right_motor.run_target(speed, angle)
+
+    def move_left_to(self, speed = 600, angle = 0):
+        self.robot.left_motor.run_target(speed, angle)
+    
+    def reset_left(self, zero = 0):
+        self.robot.left_motor.reset_angle(zero)
+    
+    def reset_right(self, zero = 0):
+        self.robot.right_motor.reset_angle(zero)
+
     def steady(self, distance, speed=SPEED, target_angle=None, timeout=None):
         """
         Moves the robot straight for a certain distance at a steady speed.

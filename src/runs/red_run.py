@@ -8,17 +8,22 @@ def red_run(robot: Robot, mv: Movement):
 
     mv.straight(-20)
     mv.reset_gyro()
-    robot.left_motor.reset_angle(0)
-    robot.right_motor.reset_angle(0)
+    mv.reset_left()
+    mv.reset_right()
 
+    """Flip smol table"""
     mv.straight(25)
     mv.turn(-43)
     mv.straight(310)
     mv.turn(-108)
     mv.straight(470)
+
+    """Remove thing from the basket"""
     mv.turn(-158, right_powerup=80, left_powerup=-80, speed=400)
     mv.straight(-55)
     mv.straight(160)
+
+    """Align for rope mission"""
     mv.turn(-181)
     mv.straight(60)
     # mv.straight(60)
@@ -26,11 +31,13 @@ def red_run(robot: Robot, mv: Movement):
     mv.straight(70, target_angle=-200)
     # mv.turn(-192, speed=400)
     # mv.straight(20)
-    robot.left_motor.run_target(10000, -1000)
+    """Do rope mission"""
+    mv.move_left_to(10000, -1000)
 
+    """Return home"""
     mv.straight(-140, target_angle=-180)
     mv.turn(-70)
-    mv.straight(100, end_speed=800, start_speed=800, cruise_speed=800)
+    mv.steady(100, speed=800)
 
     mv.turn(-104)
-    mv.straight(1200, end_speed=800, start_speed=800, cruise_speed=800)
+    mv.steady(1200, speed=800)
