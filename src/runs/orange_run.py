@@ -70,7 +70,7 @@ def orange_run(robot: Robot, mv: Movement):
     mv.move_right_to(rightSpeed, 160)
 
     """Put up the table"""
-    mv.turn(-250)
+    mv.turn(-260)
     mv.straight(-100)
     mv.turn(-220)
     mv.move_right_to(rightSpeed, 10)
@@ -78,6 +78,9 @@ def orange_run(robot: Robot, mv: Movement):
 
     """Return to base"""
     mv.straight(-70)
+    mv.move_right_to(rightSpeed, 160)
+    mv.turn(-170)
+    mv.move_right_to(rightSpeed, 10)
     mv.move_right_to(rightSpeed, 160)
     mv.turn(-270)
     mv.straight(220)
