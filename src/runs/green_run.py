@@ -20,15 +20,17 @@ def green_run(robot: Robot, mv: Movement):
     mv.turn(0)
     mv.straight(-30)
 #ktomu
-    mv.move_right_to(200, -210)
+    mv.move_right_to(200, -240)
     mv.straight(100)
     mv.straight(-40)
     mv.straight(25)
 
-    mv.move_right_to(200, -160)
-    mv.straight(50)
+    mv.move_right_to(200, -120)
+    mv.straight(60)
 
-    mv.turn(10)
-    mv.straight(100)
+    mv.turn(-10)
+    mv.straight(-35)
+    mv.turn(5)
+    mv.straight(150)
 
     mv.turn(0, left_powerup=-300, right_powerup=300, speed=400)
