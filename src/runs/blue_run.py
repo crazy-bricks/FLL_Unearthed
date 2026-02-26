@@ -30,7 +30,7 @@ def blue_run(robot: Robot, mv: Movement):
     mv.straight(200, cruise_speed=250)
     mv.move_left_to(600, -5)
     mv.move_right_to(1000, 120)
-    mv.straight(80)
+    mv.straight(90)
     mv.move_right_to(1000, 700)
     mv.move_left_to(600, 110)
 
