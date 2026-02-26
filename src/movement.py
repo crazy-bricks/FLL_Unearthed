@@ -98,7 +98,7 @@ class Movement:
             # Get correction from PID
             correction = controller.update(self.robot.hub.imu.heading())
 
-            debug_log("Target: {}, Yaw: {}".format(target_angle, self.robot.hub.imu.heading()), name="drive")
+            #debug_log("Target: {}, Yaw: {}".format(target_angle, self.robot.hub.imu.heading()), name="drive")
 
             va = accel_ratio*nowDist + start_speed
 
@@ -109,7 +109,7 @@ class Movement:
             self.robot.base.drive(direction * speed, correction)
 
             if timeout is not None and timer.time() > timeout:
-                debug_log("Drive timeout reached", name="timeout")
+                #debug_log("Drive timeout reached", name="timeout")
                 break
         self.robot.base.stop()
         self.robot.left_motor.hold()
@@ -163,7 +163,7 @@ class Movement:
             self.robot.base.drive(direction * speed, correction)
 
             if timeout is not None and timer.time() > timeout:
-                debug_log("Drive timeout reached", name="timeout")
+                #debug_log("Drive timeout reached", name="timeout")
                 break
         self.robot.base.stop()
         self.robot.left_motor.hold()
@@ -217,13 +217,13 @@ class Movement:
         while abs(controller.get_error()) > turn_tolerance:
             output = controller.update(self.robot.hub.imu.heading())
 
-            # debug_log("Target: {}, Yaw: {}, Error: {}, Output: {}, Direction: {}, Speed: {}".format(target_angle, self.robot.hub.imu.heading(), controller.get_error(), output, direction, output*direction), name="turn")
-            print(controller.get_error(),)
+            # #debug_log("Target: {}, Yaw: {}, Error: {}, Output: {}, Direction: {}, Speed: {}".format(target_angle, self.robot.hub.imu.heading(), controller.get_error(), output, direction, output*direction), name="turn")
+            #print(controller.get_error(),)
             
             motor.run(output * direction)
 
             if timeout is not None and timer.time() > timeout:
-                debug_log("Turn timeout reached", name="timeout")
+                #debug_log("Turn timeout reached", name="timeout")
                 break
         motor.hold()
         self.pose.angle = target_angle

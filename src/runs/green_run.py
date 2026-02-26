@@ -25,7 +25,7 @@ def green_run(robot: Robot, mv: Movement):
     mv.straight(-40)
     mv.straight(25)
 
-    mv.move_right_to(200, -80)
+    mv.move_right_to(200, -160)
     mv.straight(50)
 
     mv.turn(10)
