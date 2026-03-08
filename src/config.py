@@ -18,28 +18,28 @@ AXLE_TRACK = 80  # mm
 
 ##############  MOVEMENT  ##############
 
-SPEED = 600         # mm/s
+SPEED = 800         # mm/s
 SPEED_SLOW = 250    # mm/s
 
 SPEED_TURN = 300    # mm/s
 
 TURN_TOLERANCE = 3  # degrees
 
-ACCEL_RATIO = 2.0
-DECEL_RATIO = 2.0
+ACCEL_RATIO = 4.5 #2.0
+DECEL_RATIO = 2.0 #2.0
 
 ########## PID ##########
 
 PID_DRIVE = {
-    "kp": 4.0, #3
-    "ki": 0.0001,
-    "kd": 0.5,
+    "kp": 1, #4
+    "ki": 0, #0.0001
+    "kd": 1, #0.5
     "i_limit": (-100, 100),
     "output_limit": None
 }
 
 PID_TURN = {
-    "kp": 0.036, # 10
+    "kp": 0.03, # 10
     "ki": 0.01,
     "kd": 0.02,
     "i_limit": (-100, 100),
@@ -96,4 +96,12 @@ GREEN_MATRIX = Matrix([
     [100, 0  , 100, 100, 0],
     [100, 0  , 0  , 100, 0],
     [100, 100, 100, 100, 0]
+])
+
+FUN_MATRIX = Matrix([
+    [100, 100, 100  , 0  , 0],
+    [100, 0  , 0, 0  , 0],
+    [100, 100, 100  , 0  , 0],
+    [100, 0  , 0, 0  , 0],
+    [100, 0  , 0, 0  , 0]
 ])

@@ -57,6 +57,29 @@ class Movement:
         self.pose.reset_angle()
         wait(250)
 
+    def tensionMotorLeft(
+            self,
+            speed,
+            rezistence = 50
+    ):
+
+        while(self.robot.left_motor.load() < rezistence):
+            self.robot.left_motor.run(speed)
+        
+        self.robot.left_motor.stop()
+
+    def tensionMotorRigth(
+            self,
+            speed, 
+            rezistence = 50
+    ):
+
+        while(self.robot.right_motor.load() < rezistence):
+            self.robot.right_motor.run(speed)
+        
+        self.robot.right_motor.stop()
+        
+
     def straight(
             self,
             distance,
@@ -126,6 +149,11 @@ class Movement:
 
     def move_left_to(self, speed = 600, angle = 0):
         self.robot.left_motor.run_target(speed, angle)
+
+    def move_left_powerlift_to(self, speed = 600, angle = 0, power = 50):
+        self.robot.left_motor.dc(power)
+        self.robot.left_motor.run_target(speed, angle)
+        self.robot.left_motor.hold()
     
     def reset_left(self, zero = 0):
         self.robot.left_motor.reset_angle(zero)
@@ -238,7 +266,7 @@ class Movement:
         right_powerup: int = 0,
         stop_at_end: bool = True,
 
-        accel_angle: float = 10.0,
+        accel_angle: float = 5.0, #10.0
         start_accel_factor: float = 0.3,
     ):
 

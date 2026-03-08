@@ -15,6 +15,7 @@ from runs.blue_run import blue_run
 from runs.red_run import red_run
 from runs.green_run import green_run
 
+
 robot = Robot()
 pose = Pose(0, 0, 0)
 mv = Movement(robot, pose)
@@ -32,7 +33,7 @@ def main():
         Color.WHITE: (white_run,),
         Color.BLUE: (blue_run,),
         Color.RED: (red_run,),
-        Color.GREEN: (green_run,)
+        Color.GREEN: (green_run)
     }
 
     light_matrices = {
@@ -41,7 +42,7 @@ def main():
         Color.WHITE: (WHITE_MATRIX,),
         Color.BLUE: (BLUE_MATRIX,),
         Color.RED: (RED_MATRIX,),
-        Color.GREEN: (GREEN_MATRIX,),
+        Color.GREEN: (GREEN_MATRIX,)
     }
 
     stage = 0
