@@ -15,7 +15,7 @@ def orange_run(robot: Robot, mv: Movement):
     mv.reset_right()
 
     mv.move_right_to(10000, 190)
-    mv.move_left_to(10000, -105)
+    mv.move_left_to(10000, -115)
    
     mv.straight(320)
 
@@ -72,17 +72,17 @@ def orange_run(robot: Robot, mv: Movement):
 
     """Put basket to the ground"""
     mv.move_right_to(rightSpeed, 20)
-    wait(350)
+    wait(250)
     mv.turn(-150)
     mv.move_right_to(rightSpeed, 160)
     """Put up the roof"""
-    mv.turn(-265, speed=200)#265
+    mv.turn(-265, speed=150)#265
     wait(300)
     mv.straight(-100)
     mv.turn(-240)
     mv.move_right_to(rightSpeed, 5)
-    wait(300)
-    mv.straight(270)
+    wait(400)
+    mv.straight(275)
 
     """Return to base"""
     mv.straight(-70)
@@ -92,7 +92,7 @@ def orange_run(robot: Robot, mv: Movement):
     #wait(300)
     #mv.move_right_to(rightSpeed, 160)
     mv.turn(-270)
-    mv.straight(250, cruise_speed=1000)
+    mv.straight(250, cruise_speed=1000, accel_ratio= 0.5)
     mv.turn(-210)
     mv.straight(1000, cruise_speed= 1600)
 

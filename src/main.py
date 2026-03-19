@@ -14,6 +14,7 @@ from runs.white_run import white_run
 from runs.blue_run import blue_run
 from runs.red_run import red_run
 from runs.green_run import green_run
+from runs.show_run import show_run
 
 
 robot = Robot()
@@ -33,7 +34,8 @@ def main():
         Color.WHITE: (white_run,),
         Color.BLUE: (blue_run,),
         Color.RED: (red_run,),
-        Color.GREEN: (green_run)
+        Color.GREEN: (green_run,),
+        Color.MAGENTA: (show_run,)
     }
 
     light_matrices = {
@@ -42,11 +44,19 @@ def main():
         Color.WHITE: (WHITE_MATRIX,),
         Color.BLUE: (BLUE_MATRIX,),
         Color.RED: (RED_MATRIX,),
-        Color.GREEN: (GREEN_MATRIX,)
+        Color.GREEN: (GREEN_MATRIX,),
+        Color.MAGENTA: (SHOW_MATRIX)
     }
 
     stage = 0
     current_color = Color.BLACK
+
+    batteryV = robot.hub.battery.voltage()
+    batteryC = robot.hub.battery.current()    
+    debug_log("battery V")
+    debug_log(batteryV)
+    debug_log("battery C")
+    debug_log(batteryC)
     
     while True:
         top_color = robot.color_sensor.color()

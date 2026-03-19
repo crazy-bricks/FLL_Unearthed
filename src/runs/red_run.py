@@ -67,10 +67,10 @@ def red_run(robot: Robot, mv: Movement):
     #mv.move_right_to(600, 0)
 
     """Flip small table"""
-    mv.straight(25)
+    mv.straight(26)
+    mv.robot.right_motor.run_angle(400, -110, wait=False)
  
     mv.turn(-40)
- 
     mv.straight(310)
  
     """flipuje"""
@@ -81,52 +81,56 @@ def red_run(robot: Robot, mv: Movement):
         """Remove thing from the basket"""
         #ku
         mv.turn(-110) 
-        mv.straight(270)
+        mv.straight(250)
         mv.turn(-100, speed=600)
-        mv.straight(160)
+        mv.straight(250)
         #nabírání basket
-        mv.turn(-159)
+        mv.turn(-145)
         mv.straight(-80)
         wait(500)
         #ku crane
-        mv.straight(80)
+        mv.straight(75)
         mv.turn(-160)
         mv.straight(80)
-        mv.turn(-185)
-        mv.straight(60)
-        mv.turn(-200)
+        mv.turn(-190)
+        mv.straight(65)
+        mv.turn(-194)
+        #mv.turn_on_one(-10)
         #do mision
-        mv.robot.left_motor.run(-600)
+        mv.robot.left_motor.run(-800)
+        #mv.robot.left_drive.run(-50)
         wait(2000)
         mv.robot.left_motor.stop()
         #back up
         mv.straight(-100)
-        mv.turn(-55)
+        mv.turn(-56)
         #statue
-        mv.move_right_to(600, 200)
-        mv.straight(125)
-        mv.turn(-45)
-        mv.move_right_to(600, 100)
+        mv.move_right_to(600,15)
+        mv.straight(240, cruise_speed=500)
+        mv.turn(-35)
+        wait(100)
+        mv.move_right_to(600, -100)
+        wait(100)
 
         mv.turn(-110)
-        mv.straight(700, cruise_speed=1600, accel_ratio=2.0)
-        
+        mv.straight(700, cruise_speed=1600, accel_ratio=2.0, target_angle=-120)
 
-        wait(100000)
 
     else:
         """X mision"""
         #ku
         mv.turn(-110) 
-        mv.straight(140)
+        mv.straight(240)
         mv.turn(-100, speed=600)
         mv.straight(260, cruise_speed=1600)
         mv.turn(-150, speed= 300)
-        mv.straight(100)
+
+        mv.straight(90)
         mv.turn(-185)
         mv.straight(70)
-        mv.turn(-200)
+        mv.turn(-205)
         wait(100)
+        mv.straight(45)
 
         mv.robot.left_motor.run(-600)
         wait(500)
@@ -135,17 +139,17 @@ def red_run(robot: Robot, mv: Movement):
         #wait(100000)
 
         #do mision
-        mv.robot.left_motor.run(-600)
-        wait(2000)
+        mv.robot.left_motor.run(-700)
+        wait(900)
         mv.robot.left_motor.stop()
         #back up
-        mv.straight(-100)
-        mv.turn(-57)
+        mv.straight(-90)
+        mv.turn(-49)
         #statue
-        mv.move_right_to(600, 200)
-        mv.straight(120)
-        mv.turn(-40)#todle se menilo zbyenk
-        mv.move_right_to(600, 100)
+        mv.move_right_to(600, 12)
+        mv.straight(200)
+        mv.turn(-45, speed=500)#todle se menil zbyenk
+        mv.move_right_to(600, -100)
 
         mv.turn(-110)
-        mv.straight(700, cruise_speed=1600, accel_ratio=2.0)
+        mv.straight(800, cruise_speed=1600, accel_ratio=2.0)

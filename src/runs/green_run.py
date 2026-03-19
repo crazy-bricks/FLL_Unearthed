@@ -9,59 +9,39 @@ def green_run(robot: Robot, mv: Movement):
 
     #recalibrate
     mv.reset_gyro()
-    mv.straight(-20)
-
-    #mv.move_left_powerlift_to(600, -90, 100)
-
-    mv.tensionMotorLeft(-300)
-    debug_log("hi")
-    #wait(1000)
+    mv.straight(-10)
     #redy motors
     mv.reset_gyro()
     mv.reset_left()
     mv.reset_right()
-
     #mv.driverigth(180, 255)
 
     #k díře
-    mv.straight(600)
-    mv.turn(90)
-    #ku koleji
-    mv.straight(360, cruise_speed= 600)
-    #bourání sochy
-    mv.turn(0)
-    wait(200)
-    mv.straight(-80, 100)
-    #ktomu
-    mv.move_right_to(200, -290)
-    mv.straight(75, 100)
-    
-    mv.move_right_to(200, -120)
-    wait(500)
-    mv.straight(30)
-    mv.move_right_to(70, -90)
-    wait(500)
-    mv.move_right_to(70, -120)
-   
-    mv.turn(20)
-    mv.straight(50)
-    mv.turn(5)
+    mv.robot.left_motor.run_angle(300, -100, wait=False)
+    mv.straight(815, decel_ratio=1.0)   
+    mv.turn_on_one(86, wheel="left", max_speed=700)
+    mv.robot.left_motor.run_angle(600,90, wait=False)
+    mv.robot.right_motor.run_angle(200, -230)
 
-    mv.straight(90, 255)
-    #pick up
-    mv.move_left_to(100, 350)
-    #mv.move_left_powerlift_to(600, -50, 100)
-
-    wait(100)
-
-    mv.move_left_powerlift_to(50, 200, 100)
-
-
-
-    wait(100000)
-
-    #mv.turn(15)
-    #mv.straight(80)
-    #mv.driverigth(270, 300)
-
-    wait(100000)
+    #mv.robot.right_drive.run_angle(300, -10)
+    # mv.straight(5,  cruise_speed=80)
+    mv.straight(210, cruise_speed=88, target_angle=70)#70
+#delani mise
+    mv.robot.left_motor.run_angle(100, -40, wait=False)#100,-51
+    mv.robot.right_motor.run_angle(200, 145)
+    wait(700)
+#artefakt throwing
+    mv.straight(-95, cruise_speed=90, target_angle=90)
+    mv.robot.left_motor.run_angle(600, -135)
+    mv.turn(145)
+    mv.robot.left_motor.run_angle(900, 185, wait=False)
+    mv.steady(-230, 800)
+    mv.straight(-150, start_speed=600)
+    mv.steady(-230, 800)
+    mv.move_left_to(1000,90)
+    mv.move_left_to(1000,0)
+    mv.straight(-100, start_speed=600)
+    mv.turn(100)
+    mv.straight(-160)
+    mv.turn(190)
+    mv.straight(800)
